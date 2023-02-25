@@ -30,12 +30,12 @@ function onSubmit(event) {
     searchConstructor().then(totalHits => {
         if (totalHits === 0) {    
             gallery.innerHTML = "";
-            loadMoreBtn.hidden = true;
+            loadMoreBtn.classList.add('visually-hidden');
         };
 
         if (totalHits > 0) {
             Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-            loadMoreBtn.hidden = false;
+            loadMoreBtn.classList.remove('visually-hidden')
         };
     }).catch(error => console.log(error));
 };
@@ -48,7 +48,7 @@ function onLoad() {
         const numPages = Math.ceil(totalHits / 40);
 
         if (page === numPages) {
-            loadMoreBtn.hidden = true;
+            loadMoreBtn.classList.add('visually-hidden');
             Notiflix.Notify.info(`We're sorry, but you've reached the end of search results.`);
         }
    });
@@ -69,7 +69,7 @@ async function searchConstructor() {
         createImgList(data.hits);
         return data.totalHits;
     });
-    
+
     return constructor;
 };
 
@@ -77,21 +77,25 @@ async function searchConstructor() {
 function createImgList(listImg) {
     if (listImg.length > 0) {
         const markupImg = listImg.map(item => {
-            return `<a href="${item.largeImageURL}">
+            return `<a href="${item.largeImageURL}" class="card">
                         <div class="photo-card">
-                            <img src="${item.webformatURL}" alt="${item.tags}" loading="lazy" />
+                            <img src="${item.webformatURL}" alt="${item.tags}" loading="lazy" class="gallery-img" />
                             <div class="info">
                                 <p class="info-item">
-                                    <b>Likes ${item.likes}</b>
+                                    <b>Likes</b>
+                                    <b>${item.likes} ❤</b>
                                 </p>
                                 <p class="info-item">
-                                    <b>Views ${item.views}</b>
+                                    <b>Views </b>
+                                    <b>${item.views} 👀</b>
                                 </p>
                                 <p class="info-item">
-                                    <b>Comments ${item.comments}</b>
+                                    <b>Comments</b>
+                                    <b>${item.comments} 💬</b>
                                 </p>
                                 <p class="info-item">
-                                    <b>Downloads ${item.downloads}</b>
+                                    <b>Downloads</b>
+                                    <b>${item.downloads} ✔</b>
                                 </p>
                             </div>
                         </div>
@@ -103,3 +107,11 @@ function createImgList(listImg) {
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
     };
 };
+
+
+
+loadMoreBtn.classList.add('visually-hidden');
+
+Notiflix.Notify.init({
+    distance: '15px',
+})
