@@ -23,6 +23,7 @@ function onSubmit(event) {
 
     if (searchInput.value.trim().length === 0) {
         Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
+        loadMoreBtn.classList.add('visually-hidden');
         return;
     };
 
